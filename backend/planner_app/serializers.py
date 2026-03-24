@@ -13,11 +13,11 @@ class SignupSerializer(serializers.Serializer):
     favorite_color = serializers.CharField(max_length=50, required=False, allow_blank=True)
 
     def validate_username(self, value):
-        if User.objects.filter(username=value).exist():
+        if User.objects.filter(username=value).exists():
             raise serializers.ValidationError("This user is already taken.")
         return value
     def validate_email(self, value):
-        if User.objects.filter(email=value).exist():
+        if User.objects.filter(email=value).exists():
             raise serializers.ValidationError("This email is alreay taken.")
         return value
     

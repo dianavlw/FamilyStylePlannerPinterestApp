@@ -11,7 +11,7 @@ class FamilyMemberProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     family = models.ForeignKey(Family, on_delete=models.CASCADE, related_name="members")
     role = models.CharField(max_length=50)
-    style_preference = models.CharField(max_length=255, blank=True)
+    style_preferences = models.CharField(max_length=255, blank=True)
     clothing_size = models.CharField(max_length=50, blank=True)
     favorite_color = models.CharField(max_length=50, blank=True)
 
