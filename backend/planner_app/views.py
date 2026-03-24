@@ -2,7 +2,7 @@ from django.http import JsonResponse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import SignupSerializers
+from .serializers import SignupSerializer
 from .models import FamilyMemberProfile
 
 
@@ -11,9 +11,9 @@ def test_api(request):
         "message": "Backend is working "
     })
 
-@api_views(["POST"])
+@api_view(["POST"])
 def signup(request):
-    serializer = SignupSerializers(data=request.data)
+    serializer = SignupSerializer(data=request.data)
     if serializer.is_valid():
        user = serializer.save()
        return Response(
