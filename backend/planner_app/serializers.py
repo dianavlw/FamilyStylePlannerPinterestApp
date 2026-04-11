@@ -1,6 +1,55 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from .models import Family, FamilyMemberProfile
+from .models import Family, FamilyMemberProfile, Profile, Board
+
+class UserSerializer(serializers, ModelSerializer):
+    class Meta:
+        model = User
+        field = ["id", "username", "email"]
+
+class FamilySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["id", "username", "email"]
+
+class FamilyMemberProfileSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)
+    family_name = serializers.CharField(source="family.name", read_only=True)
+
+    class Meta:
+        model = FamilyMemberProfile
+        fields =[
+            "id",
+            "user",
+            "family",
+            "family_name",
+            "role",
+            "style_preferences",
+            "clothing_size",
+            "favorite_color",
+            ]
+
+class BoardSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Board
+        fields = ["id", "title", "description", "created_at"]
+
+class ProfileSerializer(serializers.ModelSerializers):
+    user = UserSerializer(read_only=True)
+    boards = BoardSerializer(many=True, read_only=True, source="user.boards")
+
+    class Meta:
+        model = Profile
+        fields = [
+            "id",
+            "user",
+            "profile_picture",
+            "about_me",
+            "instagram_url",
+            "pinterest_url",
+            "tiktok_url",
+            "boards",
+        ]
 
 class SignupSerializer(serializers.Serializer):
     username = serializers.CharField(max_length=150)
