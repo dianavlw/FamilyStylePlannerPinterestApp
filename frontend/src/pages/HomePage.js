@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function HomePage() {
   const [members, setMembers] = useState([]);
   const [error, setError] = useState('');
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch('http://127.0.0.1:8000/api/family-members/')
@@ -16,6 +19,8 @@ function HomePage() {
       <div style={styles.header}>
         <h1>Family Home</h1>
         <p>Your real family members from the backend</p>
+
+        <button onClick={() => navigate('/profile')}>Go to Profile</button>
       </div>
       {error && <p style={styles.error}>{error}</p>}
       <div style={styles.grid}>
