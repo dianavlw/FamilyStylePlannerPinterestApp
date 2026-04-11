@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from rest_framework import serializers
 from .models import Family, FamilyMemberProfile, Profile, Board
 
-class UserSerializer(serializers, ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         field = ["id", "username", "email"]
@@ -34,7 +34,7 @@ class BoardSerializer(serializers.ModelSerializer):
         model = Board
         fields = ["id", "title", "description", "created_at"]
 
-class ProfileSerializer(serializers.ModelSerializers):
+class ProfileSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
     boards = BoardSerializer(many=True, read_only=True, source="user.boards")
 

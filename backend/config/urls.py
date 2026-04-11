@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from planner_app.views import test_api, signup, family_members
+from planner_app.views import test_api, signup, family_members, ProfileView
 
 urlpatterns = [
     path('admin/', admin.site.urls),

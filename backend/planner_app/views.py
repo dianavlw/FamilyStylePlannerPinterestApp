@@ -1,9 +1,10 @@
 from django.http import JsonResponse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework import status
-from .serializers import SignupSerializer
-from .models import FamilyMemberProfile
+from rest_framework import status, generics, permissions
+
+from .serializers import SignupSerializer, ProfileSerializer
+from .models import FamilyMemberProfile, Profile
 
 
 def test_api(request):
@@ -43,3 +44,10 @@ def family_members(request):
         for member in members
     ]
     return Response(data)
+
+class ProfileView(generics.RetrieveUpdateAPIView):
+    serializer_class = ProfileSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_object(self):
+        return  self.request.user.profile
