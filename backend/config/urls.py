@@ -1,10 +1,7 @@
 from django.contrib import admin
-from django.urls import path
-from planner_app.views import test_api, signup, family_members, ProfileView
+from django.urls import path, include
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api/test/', test_api),
-    path("api/signup/", signup),
-    path("api/family-members/", family_members),
+    path("admin/", admin.site.urls),
+    path("", include("planner_app.urls")),
 ]
