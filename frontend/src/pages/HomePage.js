@@ -1,97 +1,53 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from "react-router-dom";
 
 function HomePage() {
-  const [members, setMembers] = useState([]);
-  const [error, setError] = useState('');
-
   const navigate = useNavigate();
+  const username = localStorage.getItem("username") || "friend";
 
-  useEffect(() => {
-    fetch('http://127.0.0.1:8000/api/family-members/')
-      .then((rest) => rest.json())
-      .then((data) => setMembers(data))
-      .catch(() => setError('Failed to load family members.'));
-  }, []);
+  function handleLogout() {
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("username");
+    navigate("/login");
+  }
 
   return (
-    <div style={styles.page}>
-      <div style={styles.header}>
-        <h1>Family Home</h1>
-        <p>Your real family members from the backend</p>
+    <div className="home-page">
+      <nav className="top-nav">
+        <h2>Family Style Planner</h2>
 
-        <button onClick={() => navigate('/profile')}>Go to Profile</button>
-      </div>
-      {error && <p style={styles.error}>{error}</p>}
-      <div style={styles.grid}>
-        {members.map((member) => (
-          <div key={member.id} style={styles.card}>
-            <div style={styles.avatar}>
-              {member.username?.charAt(0).toUpperCase()}
-            </div>
-            <h3>{member.username}</h3>
-            <p>
-              <strong>Role:</strong>
-              {member.role}
-            </p>
-            <p>
-              <strong>Family:</strong>
-              {member.family}
-            </p>
-            <p>
-              <strong>Style:</strong>
-              {member.style_preference}
-            </p>
-            <p>
-              <strong>Size:</strong>
-              {member.clothing_size}
-            </p>
-            <p>
-              <strong>Favorite Color:</strong>
-              {member.favorite_color}
-            </p>
-          </div>
-        ))}
-      </div>
+        <div>
+          <Link to="/home">Home</Link>
+          <Link to="/boards">Boards</Link>
+          <Link to="/profile">Profile</Link>
+          <button onClick={handleLogout}>Logout</button>
+        </div>
+      </nav>
+
+      <section className="home-hero">
+        <p className="eyebrow">Family Styling App</p>
+        <h1>Welcome, {username}</h1>
+        <p>
+          Save outfit ideas, family event inspiration, home styling boards, and
+          creative plans all in one place.
+        </p>
+
+        <div className="home-actions">
+          <Link to="/boards">View Boards</Link>
+          <Link to="/boards/new">Create Board</Link>
+          <Link to="/pins/new">Create Pin</Link>
+        </div>
+      </section>
+
+      <section className="pin-grid">
+        <div className="pin tall">Family photo outfits</div>
+        <div className="pin">Birthday party ideas</div>
+        <div className="pin large">Spring color palette</div>
+        <div className="pin">Kids weekend looks</div>
+        <div className="pin tall">Holiday inspiration</div>
+        <div className="pin">Home decor moodboard</div>
+      </section>
     </div>
   );
 }
-
-const styles = {
-  page: {
-    minHeight: '100vh',
-    background: '#faf7f5',
-    padding: '32px',
-  },
-  header: {
-    marginBottom: '24px',
-  },
-  grid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
-    gap: '16px',
-  },
-  card: {
-    background: '#fff',
-    borderRadius: '20px',
-    padding: '20px',
-    boxShadow: '0 10px 24px rgba(0,0,0,0.06)',
-  },
-  avatar: {
-    width: '56px',
-    height: '56px',
-    borderRadius: '999px',
-    background: '#ead5cb',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontWeight: 'bold',
-    fontSize: '20px',
-    marginBottom: '12px',
-  },
-  error: {
-    color: 'crimson',
-  },
-};
 
 export default HomePage;
